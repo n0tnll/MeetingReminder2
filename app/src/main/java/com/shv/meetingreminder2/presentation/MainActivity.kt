@@ -1,7 +1,8 @@
-package com.shv.meetingreminder2
+package com.shv.meetingreminder2.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shv.meetingreminder2.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
