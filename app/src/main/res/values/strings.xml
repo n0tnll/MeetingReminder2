@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">MeetingReminder2</string>
+    <string name="app_name">MeetingReminder</string>
+    <string name="button_add_reminder_descr">button add reminder</string>
+    <string name="client_photo_descr">Client photo</string>
+    <string name="icon_reminder_s_status_descr">icon reminder\'s status</string>
+    <string name="icon_time_descr">icon time</string>
+    <string name="title_hint">Title*</string>
+    <string name="client_hint">Client*</string>
+    <string name="date_hint">Date</string>
+    <string name="time_hint">Time</string>
+    <string name="button_save">Save</string>
 </resources>
