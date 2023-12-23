@@ -3,7 +3,7 @@ package com.shv.meetingreminder2.domain.entity
 data class Reminder(
     val title: String,
     val clientName: String,
-    var dataTime: Long,
+    var dateTime: Long,
     var isTimeKnown: Boolean,
     var isReminderDone: Boolean,
     val client: Client,

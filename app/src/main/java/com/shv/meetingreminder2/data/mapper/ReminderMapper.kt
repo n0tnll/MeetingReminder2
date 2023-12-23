@@ -14,7 +14,7 @@ class ReminderMapper {
         return ReminderDbModel(
             id = reminder.id,
             title = reminder.title,
-            dataTime = reminder.dataTime,
+            dataTime = reminder.dateTime,
             isTimeKnown = reminder.isTimeKnown,
             isReminderDone = reminder.isReminderDone,
             client = reminder.client
@@ -26,7 +26,7 @@ class ReminderMapper {
             id = dbModel.id,
             clientName = dbModel.client.getFullName(),
             title = dbModel.title,
-            dataTime = dbModel.dataTime,
+            dateTime = dbModel.dataTime,
             isTimeKnown = dbModel.isTimeKnown,
             isReminderDone = dbModel.isReminderDone,
             client = dbModel.client

@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.shv.meetingreminder2.databinding.FragmentClientsListBinding
-//import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
-//import com.shv.meetingreminder2.presentation.viewmodels.LoadClientsViewModel
+import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
 
 class ClientsListFragment : Fragment() {
 
@@ -16,9 +14,9 @@ class ClientsListFragment : Fragment() {
     private val binding: FragmentClientsListBinding
         get() = _binding ?: throw RuntimeException("FragmentClientsListBinding is null")
 
-//    private val adapter by lazy {
-//        ClientsAdapter()
-//    }
+    private val adapter by lazy {
+        ClientsAdapter()
+    }
 
 //    private val viewModel: LoadClientsViewModel by lazy {
 //        ViewModelProvider(this)[LoadClientsViewModel::class.java]
@@ -39,7 +37,7 @@ class ClientsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.rvClientsList.adapter = adapter
+        binding.rvClientsList.adapter = adapter
 //
 //        observeViewModel()
     }

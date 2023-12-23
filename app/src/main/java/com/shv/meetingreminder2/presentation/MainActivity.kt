@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             val reminder = Reminder(
                 title = "pezda",
                 clientName = clients[0].getFullName(),
-                dataTime = System.currentTimeMillis(),
+                dateTime = System.currentTimeMillis(),
                 isTimeKnown = true,
                 isReminderDone = false,
                 client = clients[0]
