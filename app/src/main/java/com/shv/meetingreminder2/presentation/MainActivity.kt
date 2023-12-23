@@ -3,6 +3,11 @@ package com.shv.meetingreminder2.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.data.database.AppDatabase
 import com.shv.meetingreminder2.data.extensions.getFullName
 import com.shv.meetingreminder2.data.mapper.ReminderMapper
@@ -23,24 +28,36 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupToolBar()
+
         val apiService = ApiFactory.apiService
         val clients = mutableListOf<Client>()
         val mapper = ReminderMapper()
         val dao = AppDatabase.getInstance(this).reminderDao()
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            clients.addAll(mapper.mapListDtoToListClient(apiService.getClientsList()))
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            clients.addAll(mapper.mapListDtoToListClient(apiService.getClientsList()))
+//
+//            val reminder = Reminder(
+//                title = "pezda",
+//                clientName = clients[0].getFullName(),
+//                dateTime = System.currentTimeMillis(),
+//                isTimeKnown = true,
+//                isReminderDone = false,
+//                client = clients[0]
+//            )
+//
+//            dao.addReminder(mapper.mapEntityToDbModel(reminder))
+//        }
+    }
 
-            val reminder = Reminder(
-                title = "pezda",
-                clientName = clients[0].getFullName(),
-                dateTime = System.currentTimeMillis(),
-                isTimeKnown = true,
-                isReminderDone = false,
-                client = clients[0]
-            )
+    private fun setupToolBar() {
+        setSupportActionBar(binding.tbApp)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(binding.mainFragmentContainer.id) as NavHostFragment
+        val navController = navHostFragment.navController
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
 
-            dao.addReminder(mapper.mapEntityToDbModel(reminder))
-        }
+        binding.tbApp.setupWithNavController(navController, appBarConfiguration)
     }
 }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/addReminderFragment"
         android:name="com.shv.meetingreminder2.presentation.AddReminderFragment"
-        android:label="AddReminderFragment"
+        android:label="Add Reminder"
         tools:layout="@layout/fragment_add_reminder">
         <action
             android:id="@+id/action_addReminderFragment_to_clientsListFragment"
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/clientsListFragment"
         android:name="com.shv.meetingreminder2.presentation.ClientsListFragment"
-        android:label="ClientsListFragment"
+        android:label="Clients List"
         tools:layout="@layout/fragment_clients_list" />
     <fragment
         android:id="@+id/remindersListFragment"
