@@ -4,9 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.shv.meetingreminder2.databinding.FragmentClientsListBinding
 import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
+import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsList
+import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsViewModel
+import com.shv.meetingreminder2.presentation.viewmodels.clients.Loading
+import com.shv.meetingreminder2.presentation.viewmodels.clients.LoadingError
 
 class ClientsListFragment : Fragment() {
 
@@ -18,9 +25,9 @@ class ClientsListFragment : Fragment() {
         ClientsAdapter()
     }
 
-//    private val viewModel: LoadClientsViewModel by lazy {
-//        ViewModelProvider(this)[LoadClientsViewModel::class.java]
-//    }
+    private val viewModel by lazy {
+        ViewModelProvider(this)[ClientsViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,25 +45,41 @@ class ClientsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvClientsList.adapter = adapter
-//
-//        observeViewModel()
+
+        observeViewModel()
     }
 
-//    private fun observeViewModel() {
-//        viewModel.clients.observe(viewLifecycleOwner) {
-//            adapter.submitList(it)
-//        }
-//    }
+    private fun observeViewModel() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            with(binding) {
+                pbClientLoading.isVisible = false
+                buttonRetryLoading.visibility = View.GONE
+                when (it) {
+                    is ClientsList -> {
+                        adapter.addClients(it.clientsList)
+                    }
+
+                    Loading -> {
+                        pbClientLoading.isVisible = true
+                    }
+
+                    is LoadingError -> {
+                        pbClientLoading.isVisible = false
+                        buttonRetryLoading.visibility = View.VISIBLE
+
+                        Toast.makeText(
+                            context,
+                            it.errorMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-
-        fun newInstance(): ClientsListFragment {
-            return ClientsListFragment()
-        }
     }
 }

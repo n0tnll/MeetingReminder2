@@ -40,11 +40,4 @@ class AddReminderFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-    companion object {
-
-        fun newInstance(): AddReminderFragment {
-            return AddReminderFragment()
-        }
-    }
 }

@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/remindersListFragment"
         android:name="com.shv.meetingreminder2.presentation.RemindersListFragment"
-        android:label="RemindersListFragment"
+        android:label="Meeting Reminder"
         tools:layout="@layout/fragment_reminders_list">
         <action
             android:id="@+id/action_remindersListFragment_to_addReminderFragment"
