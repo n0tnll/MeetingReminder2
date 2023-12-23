@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.databinding.FragmentAddReminderBinding
 
@@ -31,10 +32,7 @@ class AddReminderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.etClient.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.main_fragment_container, ClientsListFragment.newInstance())
-                .commit()
+            findNavController().navigate(R.id.action_addReminderFragment_to_clientsListFragment)
         }
     }
 

@@ -5,8 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.shv.meetingreminder2.presentation.AddReminderFragment
+import androidx.navigation.fragment.findNavController
 import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.databinding.FragmentRemindersListBinding
 
@@ -38,10 +37,7 @@ class RemindersListFragment : Fragment() {
 //        }
 
         binding.buttonAddReminder.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.main_fragment_container, AddReminderFragment.newInstance())
-                .commit()
+            findNavController().navigate(R.id.action_remindersListFragment_to_addReminderFragment)
         }
     }
 
