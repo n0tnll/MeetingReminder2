@@ -9,4 +9,7 @@
     <string name="date_hint">Date</string>
     <string name="time_hint">Time</string>
     <string name="button_save">Save</string>
+    <string name="retry_button">Retry</string>
+    <string name="icon_about_have_no_reminders_descr">icon about have no reminders</string>
+    <string name="no_reminders">No reminders</string>
 </resources>
