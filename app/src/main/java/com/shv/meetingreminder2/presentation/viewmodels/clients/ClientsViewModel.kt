@@ -25,7 +25,7 @@ class ClientsViewModel(
         loadClients()
     }
 
-    private fun loadClients() {
+    fun loadClients() {
         val clients = viewModelScope.async {
             _state.value = Loading
             loadClientsListUseCase()

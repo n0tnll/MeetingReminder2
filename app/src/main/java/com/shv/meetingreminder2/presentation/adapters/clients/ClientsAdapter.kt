@@ -8,6 +8,8 @@ class ClientsAdapter : RecyclerView.Adapter<ClientsViewHolder>() {
 
     private val clientsList = mutableListOf<Client>()
 
+    var onClientClickListener: ((Client) -> Unit)? = null
+
     fun addClients(newClients: List<Client>) {
         val startPosition = clientsList.size
         clientsList.addAll(newClients)
@@ -22,6 +24,6 @@ class ClientsAdapter : RecyclerView.Adapter<ClientsViewHolder>() {
 
     override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
         val client = clientsList[position]
-        holder.bind(client)
+        holder.bind(client, onClientClickListener)
     }
 }

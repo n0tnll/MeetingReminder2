@@ -72,6 +72,10 @@ class ClientsListFragment : Fragment() {
                             it.errorMessage,
                             Toast.LENGTH_SHORT
                         ).show()
+
+                        buttonRetryLoading.setOnClickListener {
+                            viewModel.loadClients()
+                        }
                     }
                 }
             }
