@@ -1,6 +1,5 @@
 package com.shv.meetingreminder2.presentation.adapters.clients
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,7 @@ class ClientsViewHolder(
     private val binding: ClientItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(client: Client, click: ((Client) -> Unit)?) {
+    fun bind(client: Client, onClientClick: ((Client) -> Unit)?) {
         with(binding) {
             with(client) {
                 ivClientPhoto.load(imgUrl)
@@ -21,8 +20,7 @@ class ClientsViewHolder(
                 tvEmail.text = email
             }
             root.setOnClickListener {
-                click?.invoke(client)
-                Log.d("ClientsViewHolder","Clicked on ${client.getFullName()}")
+                onClientClick?.invoke(client)
             }
         }
     }

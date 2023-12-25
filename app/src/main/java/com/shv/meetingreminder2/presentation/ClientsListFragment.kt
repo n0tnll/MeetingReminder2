@@ -8,7 +8,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.shv.meetingreminder2.data.extensions.getFullName
 import com.shv.meetingreminder2.databinding.FragmentClientsListBinding
+import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
 import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsList
 import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsViewModel
@@ -45,6 +48,9 @@ class ClientsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvClientsList.adapter = adapter
+        adapter.onClientClickListener = {
+            launchAddReminderFragment(it)
+        }
 
         observeViewModel()
     }
@@ -80,6 +86,12 @@ class ClientsListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun launchAddReminderFragment(client: Client) {
+        val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
+        savedStateHandle?.set(AddReminderFragment.RESULT_CLIENT, client.getFullName())
+        findNavController().navigateUp()
     }
 
     override fun onDestroy() {
