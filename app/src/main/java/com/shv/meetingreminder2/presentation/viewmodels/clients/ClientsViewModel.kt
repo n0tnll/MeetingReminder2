@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.shv.meetingreminder2.data.MeetingReminderRepositoryImpl
+import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
 import com.shv.meetingreminder2.domain.usecases.LoadClientsListUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

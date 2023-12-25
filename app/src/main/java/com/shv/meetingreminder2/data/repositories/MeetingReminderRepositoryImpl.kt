@@ -1,4 +1,4 @@
-package com.shv.meetingreminder2.data
+package com.shv.meetingreminder2.data.repositories
 
 import android.app.Application
 import androidx.lifecycle.LiveData
