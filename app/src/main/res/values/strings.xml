@@ -6,7 +6,7 @@
     <string name="icon_time_descr">icon time</string>
     <string name="title_hint">Title*</string>
     <string name="client_hint">Client*</string>
-    <string name="date_hint">Date</string>
+    <string name="date_hint">Date*</string>
     <string name="time_hint">Time</string>
     <string name="button_save">Save</string>
     <string name="retry_button">Retry</string>
