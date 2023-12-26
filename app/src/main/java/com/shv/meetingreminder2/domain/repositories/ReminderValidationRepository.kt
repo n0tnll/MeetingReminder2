@@ -8,7 +8,5 @@ interface ReminderValidationRepository {
 
     fun validateClient(clientName: String): ValidationResult
 
-    fun validateDate(date: Long): ValidationResult
-
-    fun validateTime(time: Long): ValidationResult
+    fun validateDateTime(date: String, time: String?): ValidationResult
 }

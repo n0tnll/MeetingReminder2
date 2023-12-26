@@ -47,6 +47,8 @@ class AddReminderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.etDateMeeting.setText(calendar.timeInMillis.toDateString())
+
         binding.etClient.setOnClickListener {
             observeChosenClient()
             findNavController().navigate(
@@ -101,8 +103,8 @@ class AddReminderFragment : Fragment() {
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(clockFormat)
             .setTitleText("Select meeting time")
-            .setHour(12)
-            .setMinute(0)
+            .setHour(DEFAULT_HOUR)
+            .setMinute(DEFAULT_MINUTES)
             .build()
 
         picker.addOnPositiveButtonClickListener {
@@ -131,5 +133,7 @@ class AddReminderFragment : Fragment() {
         private const val DATE_PICKER_TAG = "date_picker"
         private const val TIME_PICKER_TAG = "time_picker"
         private const val EMPTY_FIELD = ""
+        private const val DEFAULT_HOUR = 12
+        private const val DEFAULT_MINUTES = 30
     }
 }
