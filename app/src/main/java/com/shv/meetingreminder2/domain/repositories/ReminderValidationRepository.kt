@@ -1,6 +1,7 @@
 package com.shv.meetingreminder2.domain.repositories
 
 import com.shv.meetingreminder2.domain.usecases.validation.ValidationResult
+import java.util.Calendar
 
 interface ReminderValidationRepository {
 
@@ -8,5 +9,5 @@ interface ReminderValidationRepository {
 
     fun validateClient(clientName: String): ValidationResult
 
-    fun validateDateTime(date: String, time: String?): ValidationResult
+    fun validateDateTime(calendar: Calendar?): ValidationResult
 }

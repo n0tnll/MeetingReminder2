@@ -4,8 +4,8 @@ data class Reminder(
     val title: String,
     val clientName: String,
     var dateTime: Long,
-    var isTimeKnown: Boolean,
-    var isReminderDone: Boolean,
+    var isTimeKnown: Boolean = false,
+    var isReminderDone: Boolean = false,
     val client: Client,
     var id: Int = UNDEFINED_ID
 ) {
