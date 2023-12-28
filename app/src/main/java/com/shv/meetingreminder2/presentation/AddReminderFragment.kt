@@ -1,11 +1,17 @@
 package com.shv.meetingreminder2.presentation
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -23,6 +29,7 @@ import com.shv.meetingreminder2.data.extensions.toTimeString
 import com.shv.meetingreminder2.databinding.FragmentAddReminderBinding
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
+import com.shv.meetingreminder2.presentation.br.AlarmReceiver
 import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderFormState
 import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderViewModel
 import java.util.Calendar
@@ -161,16 +168,27 @@ class AddReminderFragment : Fragment() {
 
     private fun saveReminder() {
         val isTimeKnown = !binding.etTimeMeeting.text.isNullOrBlank()
-        val reminder = Reminder(
-            id = if (arguments == null) Reminder.UNDEFINED_ID else editedReminderId
-                ?: throw RuntimeException("editedReminderId is null"),
-            title = reminderTitle,
-            clientName = client.getFullName(),
-            dateTime = calendar.timeInMillis,
-            isTimeKnown = isTimeKnown,
-            client = client
-        )
+        val reminder = if (editedReminderId == null) {
+            Reminder(
+                title = reminderTitle,
+                clientName = client.getFullName(),
+                dateTime = calendar.timeInMillis,
+                isTimeKnown = isTimeKnown,
+                client = client
+            )
+        } else {
+            Reminder(
+                id = editedReminderId ?: throw RuntimeException("Client is null"),
+                title = reminderTitle,
+                clientName = client.getFullName(),
+                dateTime = calendar.timeInMillis,
+                isTimeKnown = isTimeKnown,
+                client = client
+            )
+        }
+        if (editedReminderId != null) cancelNotification(reminder.id)
         viewModel.addReminder(reminder)
+        setReminderAlarm(reminder)
     }
 
     private fun setTextWatchers() {
@@ -249,6 +267,39 @@ class AddReminderFragment : Fragment() {
         findNavController().navigateUp()
     }
 
+    private fun cancelNotification(id: Int) {
+        NotificationManagerCompat.from(requireContext()).cancel(null, id)
+    }
+
+    private fun setReminderAlarm(reminder: Reminder) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val meetingTime = Calendar.getInstance().apply {
+            timeInMillis = reminder.dateTime
+            if (reminder.isTimeKnown) {
+                add(Calendar.HOUR_OF_DAY, -1)
+                set(Calendar.SECOND, 0)
+            } else {
+                add(Calendar.HOUR_OF_DAY, 1)
+                set(Calendar.SECOND, 0)
+            }
+        }
+        val intent = AlarmReceiver.newIntent(requireContext()).apply {
+            putExtra(ALARM_RECEIVER_EXTRA, reminder)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                requireContext(),
+                reminder.id,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, meetingTime.timeInMillis, pendingIntent)
+        Toast.makeText(context, "Notification was added!", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -257,6 +308,8 @@ class AddReminderFragment : Fragment() {
     companion object {
         const val RESULT_CLIENT = "chosen_client"
         const val EDIT_REMINDER = "edit_reminder"
+        const val ALARM_RECEIVER_EXTRA = "reminder_alarm"
+
         private const val DATE_PICKER_TAG = "date_picker"
         private const val TIME_PICKER_TAG = "time_picker"
         private const val EMPTY_FIELD = ""

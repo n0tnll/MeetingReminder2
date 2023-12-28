@@ -13,7 +13,7 @@ interface ReminderDao {
         "SELECT * " +
                 "FROM reminders " +
                 "ORDER BY isReminderDone " +
-                "AND dataTime"
+                "AND dateTime"
     )
     fun getRemindersList(): LiveData<List<ReminderDbModel>>
 
@@ -25,4 +25,12 @@ interface ReminderDao {
 
     @Query("DELETE FROM reminders WHERE id=:reminderId")
     suspend fun deleteReminder(reminderId: Int)
+
+    @Query(
+        "SELECT * " +
+                "FROM reminders " +
+                "WHERE isReminderDone = 0 " +
+                "AND dateTime > :currentTime"
+    )
+    fun getActiveAlarms(currentTime: Long): List<ReminderDbModel>
 }

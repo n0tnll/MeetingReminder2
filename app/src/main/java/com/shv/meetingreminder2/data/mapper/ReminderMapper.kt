@@ -14,7 +14,7 @@ class ReminderMapper {
         return ReminderDbModel(
             id = reminder.id,
             title = reminder.title,
-            dataTime = reminder.dateTime,
+            dateTime = reminder.dateTime,
             isTimeKnown = reminder.isTimeKnown,
             isReminderDone = reminder.isReminderDone,
             client = reminder.client
@@ -26,14 +26,14 @@ class ReminderMapper {
             id = dbModel.id,
             clientName = dbModel.client.getFullName(),
             title = dbModel.title,
-            dateTime = dbModel.dataTime,
+            dateTime = dbModel.dateTime,
             isTimeKnown = dbModel.isTimeKnown,
             isReminderDone = dbModel.isReminderDone,
             client = dbModel.client
         )
     }
 
-    fun mapClientDtoToClient(dto: ClientDto): Client {
+    private fun mapClientDtoToClient(dto: ClientDto): Client {
         return Client(
             clientId = atomicInteger.addAndGet(INCREMENT_CLIENT_ID),
             accost = dto.fullName.accost,
@@ -48,6 +48,13 @@ class ReminderMapper {
         clientListDto.clients.map {
             mapClientDtoToClient(it)
         }
+
+    fun mapListReminderDbModelToListEntity(listDbModel: List<ReminderDbModel>): List<Reminder> {
+        val list = listDbModel.map {
+            mapDbModelToEntity(it)
+        }
+        return list
+    }
 
     private companion object {
         private val atomicInteger = AtomicInteger(0)

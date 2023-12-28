@@ -12,5 +12,6 @@
     <string name="retry_button">Retry</string>
     <string name="icon_about_have_no_reminders_descr">icon about have no reminders</string>
     <string name="client_field_template">%s\n%s</string>
+    <string name="notifications_permission_granted">Нет разрешения на уведомления!</string>
     <string name="no_reminders">No reminders</string>
 </resources>

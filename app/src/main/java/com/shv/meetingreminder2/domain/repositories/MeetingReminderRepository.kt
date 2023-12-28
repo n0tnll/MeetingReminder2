@@ -15,4 +15,8 @@ interface MeetingReminderRepository {
     suspend fun deleteReminder(id: Int)
 
     suspend fun loadClientsList(): List<Client>
+
+    suspend fun updateAlarmStatus(reminder: Reminder)
+
+    suspend fun getActiveAlarms(time: Long): List<Reminder>
 }

@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +26,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name="com.shv.meetingreminder2.presentation.br.AlarmReceiver" />
+        <receiver
+            android:name="com.shv.meetingreminder2.presentation.br.OnRepeatableBroadcastReceiver"
+            tools:ignore="Instantiatable" />
+        <receiver
+            android:name="com.shv.meetingreminder2.presentation.br.OnCompletedBroadcastReceiver"
+            tools:ignore="Instantiatable" />
+        <receiver
+            android:name="com.shv.meetingreminder2.presentation.br.RebootBroadcastReceiver"
+            android:enabled="false"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

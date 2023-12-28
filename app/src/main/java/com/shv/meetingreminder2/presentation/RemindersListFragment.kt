@@ -1,5 +1,8 @@
 package com.shv.meetingreminder2.presentation
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +18,7 @@ import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.databinding.FragmentRemindersListBinding
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.adapters.reminders.RemindersAdapter
+import com.shv.meetingreminder2.presentation.br.AlarmReceiver
 import com.shv.meetingreminder2.presentation.viewmodels.reminders.RemindersViewModel
 
 class RemindersListFragment : Fragment() {
@@ -95,6 +99,7 @@ class RemindersListFragment : Fragment() {
                             "\"${reminder.title}\" has been deleted",
                             Toast.LENGTH_SHORT
                         ).show()
+                        cancelNotification(reminder.id)
                     }
 
                     ItemTouchHelper.RIGHT -> {
@@ -115,6 +120,18 @@ class RemindersListFragment : Fragment() {
             R.id.action_remindersListFragment_to_addReminderFragment,
             bundle
         )
+    }
+
+    private fun cancelNotification(reminderId: Int) {
+        val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = AlarmReceiver.newIntent(requireContext())
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            reminderId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.cancel(pendingIntent)
     }
 
 

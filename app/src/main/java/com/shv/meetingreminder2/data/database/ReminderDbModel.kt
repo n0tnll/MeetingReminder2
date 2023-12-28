@@ -7,10 +7,10 @@ import com.shv.meetingreminder2.domain.entity.Client
 
 @Entity(tableName = "reminders")
 data class ReminderDbModel(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val title: String,
-    var dataTime: Long,
+    var dateTime: Long,
     var isTimeKnown: Boolean,
     var isReminderDone: Boolean,
     @Embedded
