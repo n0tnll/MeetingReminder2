@@ -1,5 +1,6 @@
 package com.shv.meetingreminder2.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat.is24HourFormat
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ class AddReminderFragment : Fragment() {
 
     private lateinit var reminderTitle: String
     private lateinit var client: Client
+    private var editedReminderId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,10 +66,38 @@ class AddReminderFragment : Fragment() {
         observeViewModel()
         setTextWatchers()
         setOnClickListeners()
+        getReminderToEdit()
 
         binding.etDateMeeting.setText(calendar.timeInMillis.toDateString())
 
+    }
 
+    private fun getReminderToEdit() {
+        arguments?.let {
+            val reminder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.getParcelable(EDIT_REMINDER, Reminder::class.java)
+            } else {
+                it.getParcelable<Reminder>(EDIT_REMINDER)
+            }
+
+            reminder?.let { reminderFromBundle ->
+                calendar.timeInMillis = reminderFromBundle.dateTime
+                editedReminderId = reminderFromBundle.id
+                client = reminderFromBundle.client
+                setEditingReminderToForm(reminderFromBundle)
+            }
+        }
+    }
+
+    private fun setEditingReminderToForm(reminder: Reminder) {
+        with(binding) {
+            with(reminder) {
+                etTitle.setText(title)
+                etClient.setText(clientName)
+                etDateMeeting.setText(dateTime.toDateString())
+                etTimeMeeting.setText(dateTime.toTimeString())
+            }
+        }
     }
 
     private fun observeChosenClient() {
@@ -132,6 +162,8 @@ class AddReminderFragment : Fragment() {
     private fun saveReminder() {
         val isTimeKnown = !binding.etTimeMeeting.text.isNullOrBlank()
         val reminder = Reminder(
+            id = if (arguments == null) Reminder.UNDEFINED_ID else editedReminderId
+                ?: throw RuntimeException("editedReminderId is null"),
             title = reminderTitle,
             clientName = client.getFullName(),
             dateTime = calendar.timeInMillis,
@@ -224,6 +256,7 @@ class AddReminderFragment : Fragment() {
 
     companion object {
         const val RESULT_CLIENT = "chosen_client"
+        const val EDIT_REMINDER = "edit_reminder"
         private const val DATE_PICKER_TAG = "date_picker"
         private const val TIME_PICKER_TAG = "time_picker"
         private const val EMPTY_FIELD = ""

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.databinding.FragmentRemindersListBinding
+import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.adapters.reminders.RemindersAdapter
 import com.shv.meetingreminder2.presentation.viewmodels.reminders.RemindersViewModel
 
@@ -70,7 +72,7 @@ class RemindersListFragment : Fragment() {
     private fun setupSwipeToDelete() {
         val swipeToItemCallback = object : ItemTouchHelper.SimpleCallback(
             0,
-            ItemTouchHelper.LEFT
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -94,11 +96,25 @@ class RemindersListFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
+                    ItemTouchHelper.RIGHT -> {
+                        launchEditReminderFragment(reminder)
+                    }
                 }
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToItemCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvRemindersList)
+    }
+
+    private fun launchEditReminderFragment(reminder: Reminder) {
+        val bundle = bundleOf(
+            AddReminderFragment.EDIT_REMINDER to reminder
+        )
+        findNavController().navigate(
+            R.id.action_remindersListFragment_to_addReminderFragment,
+            bundle
+        )
     }
 
 

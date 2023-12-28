@@ -9,7 +9,12 @@ import androidx.room.Query
 @Dao
 interface ReminderDao {
 
-    @Query("SELECT * FROM reminders") //TODO add sort later
+    @Query(
+        "SELECT * " +
+                "FROM reminders " +
+                "ORDER BY isReminderDone " +
+                "AND dataTime"
+    )
     fun getRemindersList(): LiveData<List<ReminderDbModel>>
 
     @Query("SELECT * FROM reminders WHERE id=:reminderId LIMIT 1")

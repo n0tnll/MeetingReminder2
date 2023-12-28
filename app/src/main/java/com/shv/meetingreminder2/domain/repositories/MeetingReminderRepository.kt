@@ -12,8 +12,6 @@ interface MeetingReminderRepository {
 
     suspend fun addReminder(reminder: Reminder)
 
-    suspend fun editReminder(reminder: Reminder)
-
     suspend fun deleteReminder(id: Int)
 
     suspend fun loadClientsList(): List<Client>

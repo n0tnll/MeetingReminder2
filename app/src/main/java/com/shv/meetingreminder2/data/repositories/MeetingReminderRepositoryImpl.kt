@@ -37,10 +37,6 @@ class MeetingReminderRepositoryImpl(
         reminderDao.addReminder(mapper.mapEntityToDbModel(reminder))
     }
 
-    override suspend fun editReminder(reminder: Reminder) {
-        reminderDao.addReminder(mapper.mapEntityToDbModel(reminder))
-    }
-
     override suspend fun deleteReminder(id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             reminderDao.deleteReminder(id)

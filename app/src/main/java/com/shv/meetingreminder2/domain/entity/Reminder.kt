@@ -1,5 +1,9 @@
 package com.shv.meetingreminder2.domain.entity
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Reminder(
     val title: String,
     val clientName: String,
@@ -8,8 +12,8 @@ data class Reminder(
     var isReminderDone: Boolean = false,
     val client: Client,
     var id: Int = UNDEFINED_ID
-) {
+) : Parcelable {
     companion object {
-        private const val UNDEFINED_ID = 0
+        const val UNDEFINED_ID = 0
     }
 }
