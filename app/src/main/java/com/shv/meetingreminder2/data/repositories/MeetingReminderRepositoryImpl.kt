@@ -9,6 +9,9 @@ import com.shv.meetingreminder2.data.network.api.ApiFactory
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.repositories.MeetingReminderRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MeetingReminderRepositoryImpl(
     private val application: Application
@@ -39,7 +42,9 @@ class MeetingReminderRepositoryImpl(
     }
 
     override suspend fun deleteReminder(id: Int) {
-        reminderDao.deleteReminder(id)
+        CoroutineScope(Dispatchers.IO).launch {
+            reminderDao.deleteReminder(id)
+        }
     }
 
     override suspend fun loadClientsList(): List<Client> {
