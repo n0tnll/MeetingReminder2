@@ -14,12 +14,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.databinding.FragmentRemindersListBinding
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.adapters.reminders.RemindersAdapter
 import com.shv.meetingreminder2.presentation.br.AlarmReceiver
+import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
 import com.shv.meetingreminder2.presentation.viewmodels.reminders.RemindersViewModel
+import javax.inject.Inject
 
 class RemindersListFragment : Fragment() {
 
@@ -31,8 +34,15 @@ class RemindersListFragment : Fragment() {
         RemindersAdapter()
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as MeetingReminderApplication).component
+    }
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[RemindersViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[RemindersViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -49,7 +59,9 @@ class RemindersListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerView()
         observeViewModel()
         setupSwipeToDelete()

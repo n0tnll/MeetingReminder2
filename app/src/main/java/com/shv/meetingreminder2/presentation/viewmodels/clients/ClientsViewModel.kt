@@ -1,21 +1,17 @@
 package com.shv.meetingreminder2.presentation.viewmodels.clients
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
 import com.shv.meetingreminder2.domain.usecases.LoadClientsListUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ClientsViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val repository = MeetingReminderRepositoryImpl(application)
-    private val loadClientsListUseCase = LoadClientsListUseCase(repository)
+class ClientsViewModel @Inject constructor(
+    private val loadClientsListUseCase: LoadClientsListUseCase
+) : ViewModel() {
 
     private val _state = MutableLiveData<ClientsState>()
     val state: LiveData<ClientsState>

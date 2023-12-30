@@ -22,6 +22,7 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.data.extensions.getFullName
 import com.shv.meetingreminder2.data.extensions.toDateString
@@ -30,9 +31,11 @@ import com.shv.meetingreminder2.databinding.FragmentAddReminderBinding
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.br.AlarmReceiver
+import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
 import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderFormState
 import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderViewModel
 import java.util.Calendar
+import javax.inject.Inject
 
 class AddReminderFragment : Fragment() {
 
@@ -40,8 +43,15 @@ class AddReminderFragment : Fragment() {
     private val binding: FragmentAddReminderBinding
         get() = _binding ?: throw RuntimeException("FragmentAddReminderBinding is null")
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as MeetingReminderApplication).component
+    }
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[AddReminderViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[AddReminderViewModel::class.java]
     }
 
     private val calendar by lazy {
@@ -68,6 +78,7 @@ class AddReminderFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onViewCreated(view, savedInstanceState)
 
         observeViewModel()

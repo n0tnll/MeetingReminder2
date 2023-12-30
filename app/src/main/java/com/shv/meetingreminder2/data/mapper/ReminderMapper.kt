@@ -7,8 +7,9 @@ import com.shv.meetingreminder2.data.network.models.ClientListDto
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
-class ReminderMapper {
+class ReminderMapper @Inject constructor() {
 
     fun mapEntityToDbModel(reminder: Reminder): ReminderDbModel {
         return ReminderDbModel(

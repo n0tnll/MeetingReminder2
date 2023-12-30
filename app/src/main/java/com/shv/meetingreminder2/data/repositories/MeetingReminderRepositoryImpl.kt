@@ -1,12 +1,11 @@
 package com.shv.meetingreminder2.data.repositories
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.shv.meetingreminder2.data.database.AppDatabase
+import com.shv.meetingreminder2.data.database.ReminderDao
 import com.shv.meetingreminder2.data.database.ReminderDbModel
 import com.shv.meetingreminder2.data.mapper.ReminderMapper
-import com.shv.meetingreminder2.data.network.api.ApiFactory
+import com.shv.meetingreminder2.data.network.api.ApiService
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.repositories.MeetingReminderRepository
@@ -15,14 +14,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MeetingReminderRepositoryImpl(
-    private val context: Context
+class MeetingReminderRepositoryImpl @Inject constructor(
+    private val reminderDao: ReminderDao,
+    private val apiService: ApiService,
+    private val mapper: ReminderMapper
 ) : MeetingReminderRepository {
-
-    private val reminderDao = AppDatabase.getInstance(context).reminderDao()
-    private val apiService = ApiFactory.apiService
-    private val mapper = ReminderMapper()
 
     override fun getRemindersList(): LiveData<List<Reminder>> {
         return reminderDao.getRemindersList().map {

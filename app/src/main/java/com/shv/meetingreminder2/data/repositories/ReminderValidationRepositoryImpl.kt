@@ -6,8 +6,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.Calendar
+import javax.inject.Inject
 
-class ReminderValidationRepositoryImpl : ReminderValidationRepository {
+class ReminderValidationRepositoryImpl @Inject constructor() : ReminderValidationRepository {
 
     override fun validateTitle(title: String): ValidationResult {
         if (title.isBlank()) {

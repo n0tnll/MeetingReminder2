@@ -1,21 +1,16 @@
 package com.shv.meetingreminder2.presentation.viewmodels.reminders
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
 import com.shv.meetingreminder2.domain.usecases.DeleteReminderUseCase
 import com.shv.meetingreminder2.domain.usecases.GetRemindersListUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RemindersViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val repository = MeetingReminderRepositoryImpl(application)
-    private val getRemindersListUseCase = GetRemindersListUseCase(repository)
-    private val deleteReminderUseCase = DeleteReminderUseCase(repository)
-
+class RemindersViewModel @Inject constructor(
+    private val getRemindersListUseCase: GetRemindersListUseCase,
+    private val deleteReminderUseCase: DeleteReminderUseCase
+) : ViewModel() {
     val reminders = getRemindersListUseCase()
 
     fun deleteReminder(id: Int) {

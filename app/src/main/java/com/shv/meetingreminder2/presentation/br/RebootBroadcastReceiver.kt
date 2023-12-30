@@ -1,12 +1,11 @@
 package com.shv.meetingreminder2.presentation.br
 
 import android.app.AlarmManager
-import android.app.Application
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
+import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.usecases.notifications.GetActiveAlarmsUseCase
 import com.shv.meetingreminder2.presentation.AddReminderFragment.Companion.ALARM_RECEIVER_EXTRA
@@ -14,14 +13,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import javax.inject.Inject
 
-class RebootBroadcastReceiver(
-    application: Application
-) : BroadcastReceiver() {
+class RebootBroadcastReceiver : BroadcastReceiver() {
 
-    private val repository = MeetingReminderRepositoryImpl(application)
-    private val getActiveAlarmsUseCase = GetActiveAlarmsUseCase(repository)
+    @Inject
+    lateinit var getActiveAlarmsUseCase: GetActiveAlarmsUseCase
     override fun onReceive(context: Context, intent: Intent) {
+        (context.applicationContext as MeetingReminderApplication).component.inject(this)
         if (intent.action.equals("android.intent.action.BOOT_COMPLETED")) {
             val time = Calendar.getInstance().timeInMillis
             CoroutineScope(Dispatchers.Main).launch {

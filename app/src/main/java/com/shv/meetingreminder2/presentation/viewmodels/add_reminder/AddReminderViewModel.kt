@@ -1,14 +1,11 @@
 package com.shv.meetingreminder2.presentation.viewmodels.add_reminder
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shv.meetingreminder2.data.extensions.toDateString
 import com.shv.meetingreminder2.data.extensions.toTimeString
-import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
-import com.shv.meetingreminder2.data.repositories.ReminderValidationRepositoryImpl
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.usecases.AddReminderUseCase
@@ -17,17 +14,15 @@ import com.shv.meetingreminder2.domain.usecases.validation.ValidateDateTimeUseCa
 import com.shv.meetingreminder2.domain.usecases.validation.ValidateTitleUseCase
 import com.shv.meetingreminder2.presentation.AddReminderFormEvent
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddReminderViewModel(
-    application: Application
-) : AndroidViewModel(application) {
+class AddReminderViewModel @Inject constructor(
+    private val validateTitleUseCase: ValidateTitleUseCase,
+    private val validateClientUseCase: ValidateClientUseCase,
+    private val validateDateTimeUseCase: ValidateDateTimeUseCase,
+    private val addReminderUseCase: AddReminderUseCase,
+) : ViewModel() {
 
-    private val repository = ReminderValidationRepositoryImpl()
-    private val validateTitleUseCase = ValidateTitleUseCase(repository)
-    private val validateClientUseCase = ValidateClientUseCase(repository)
-    private val validateDateTimeUseCase = ValidateDateTimeUseCase(repository)
-    private val repositoryReminder = MeetingReminderRepositoryImpl(application)
-    private val addReminderUseCase = AddReminderUseCase(repositoryReminder)
 
     private val _state = MutableLiveData<AddReminderFormState>()
     val state: LiveData<AddReminderFormState>

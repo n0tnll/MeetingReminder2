@@ -9,13 +9,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.databinding.FragmentClientsListBinding
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
+import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
 import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsList
 import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsViewModel
 import com.shv.meetingreminder2.presentation.viewmodels.clients.Loading
 import com.shv.meetingreminder2.presentation.viewmodels.clients.LoadingError
+import javax.inject.Inject
 
 class ClientsListFragment : Fragment() {
 
@@ -27,8 +30,15 @@ class ClientsListFragment : Fragment() {
         ClientsAdapter()
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as MeetingReminderApplication).component
+    }
+
     private val viewModel by lazy {
-        ViewModelProvider(this)[ClientsViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[ClientsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -45,7 +55,9 @@ class ClientsListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onViewCreated(view, savedInstanceState)
+
         binding.rvClientsList.adapter = adapter
         adapter.onClientClickListener = {
             launchAddReminderFragment(it)

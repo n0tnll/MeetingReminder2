@@ -5,22 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.shv.meetingreminder2.data.repositories.MeetingReminderRepositoryImpl
+import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.usecases.notifications.UpdateTaskStatusUseCase
 import com.shv.meetingreminder2.presentation.AddReminderFragment.Companion.ALARM_RECEIVER_EXTRA
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class OnCompletedBroadcastReceiver : BroadcastReceiver() {
 
-//    private val repository = MeetingReminderRepositoryImpl(application)
-//    private val updateTaskStatusUseCase = UpdateTaskStatusUseCase(repository)
-    override fun onReceive(context: Context, intent: Intent) {
-        val repository = MeetingReminderRepositoryImpl(context.applicationContext)
-        val updateTaskStatusUseCase = UpdateTaskStatusUseCase(repository)
+    @Inject
+    lateinit var updateTaskStatusUseCase: UpdateTaskStatusUseCase
 
+    override fun onReceive(context: Context, intent: Intent) {
+        (context.applicationContext as MeetingReminderApplication).component.inject(this)
         val reminder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
                 ALARM_RECEIVER_EXTRA,
