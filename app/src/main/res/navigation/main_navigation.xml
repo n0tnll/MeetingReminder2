@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_addReminderFragment_to_clientsListFragment"
             app:destination="@id/clientsListFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down"
             app:popUpTo="@id/addReminderFragment" />
     </fragment>
     <fragment
@@ -27,6 +30,8 @@
         tools:layout="@layout/fragment_reminders_list">
         <action
             android:id="@+id/action_remindersListFragment_to_addReminderFragment"
-            app:destination="@id/addReminderFragment" />
+            app:destination="@id/addReminderFragment"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down" />
     </fragment>
 </navigation>
