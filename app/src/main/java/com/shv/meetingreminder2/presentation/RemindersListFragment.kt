@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +24,9 @@ import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.adapters.reminders.RemindersAdapter
 import com.shv.meetingreminder2.presentation.br.AlarmReceiver
 import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
+import com.shv.meetingreminder2.presentation.viewmodels.reminders.RemindersListState
 import com.shv.meetingreminder2.presentation.viewmodels.reminders.RemindersViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RemindersListFragment : Fragment() {
@@ -72,12 +77,21 @@ class RemindersListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.reminders.observe(viewLifecycleOwner) {
-            if (it.isEmpty())
-                binding.llEmptyList.visibility = View.VISIBLE
-            else binding.llEmptyList.visibility = View.GONE
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.reminders.collect {
+                    when (it) {
+                        RemindersListState.EmptyList -> {
+                            binding.llEmptyList.visibility = View.VISIBLE
+                        }
 
-            adapter.submitList(it)
+                        is RemindersListState.RemindersList -> {
+                            binding.llEmptyList.visibility = View.GONE
+                            adapter.submitList(it.remindersList)
+                        }
+                    }
+                }
+            }
         }
     }
 

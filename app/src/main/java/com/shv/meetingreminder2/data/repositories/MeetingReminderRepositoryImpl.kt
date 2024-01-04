@@ -1,7 +1,5 @@
 package com.shv.meetingreminder2.data.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.shv.meetingreminder2.data.database.ReminderDao
 import com.shv.meetingreminder2.data.database.ReminderDbModel
 import com.shv.meetingreminder2.data.mapper.ReminderMapper
@@ -32,11 +30,13 @@ class MeetingReminderRepositoryImpl @Inject constructor(
 
     private val retryLoadClientEvent = MutableSharedFlow<Unit>()
 
-    override fun getRemindersList(): LiveData<List<Reminder>> {
-        return reminderDao.getRemindersList().map {
+    override fun getRemindersList(): Flow<List<Reminder>> = flow {
+        reminderDao.getRemindersList().map {
             it.map { dbModel ->
                 mapper.mapDbModelToEntity(dbModel)
             }
+        }.collect {
+            emit(it)
         }
     }
 
@@ -72,7 +72,7 @@ class MeetingReminderRepositoryImpl @Inject constructor(
         emit(ClientsState.Loading)
     }.retryWhen { cause, _ ->
         emit(ClientsState.LoadingError(cause.message))
-        delay(5_000)
+        delay(RETRY_TIMEOUT_MILLIS)
         true
     }
 
@@ -94,5 +94,9 @@ class MeetingReminderRepositoryImpl @Inject constructor(
             }
         }
         return mapper.mapListReminderDbModelToListEntity(list)
+    }
+
+    companion object {
+        private const val RETRY_TIMEOUT_MILLIS = 5000L
     }
 }

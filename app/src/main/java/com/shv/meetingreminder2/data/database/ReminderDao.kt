@@ -1,10 +1,10 @@
 package com.shv.meetingreminder2.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReminderDao {
@@ -15,7 +15,7 @@ interface ReminderDao {
                 "ORDER BY isReminderDone " +
                 "AND dateTime"
     )
-    fun getRemindersList(): LiveData<List<ReminderDbModel>>
+    fun getRemindersList(): Flow<List<ReminderDbModel>>
 
     @Query("SELECT * FROM reminders WHERE id=:reminderId LIMIT 1")
     suspend fun getReminder(reminderId: Int): ReminderDbModel
