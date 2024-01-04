@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -107,8 +108,10 @@ class ClientsListFragment : Fragment() {
     }
 
     private fun launchAddReminderFragment(client: Client) {
-        val savedStateHandle = findNavController().previousBackStackEntry?.savedStateHandle
-        savedStateHandle?.set(AddReminderFragment.RESULT_CLIENT, client)
+        val result = Bundle().apply {
+            putParcelable(AddReminderFragment.RESULT_CLIENT, client)
+        }
+        setFragmentResult(AddReminderFragment.RESULT_CLIENT, result)
         findNavController().navigateUp()
     }
 

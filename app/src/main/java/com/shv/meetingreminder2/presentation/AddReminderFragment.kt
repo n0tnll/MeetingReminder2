@@ -14,8 +14,11 @@ import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
@@ -32,8 +35,8 @@ import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.presentation.br.AlarmReceiver
 import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
-import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderFormState
 import com.shv.meetingreminder2.presentation.viewmodels.add_reminder.AddReminderViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -87,7 +90,6 @@ class AddReminderFragment : Fragment() {
         getReminderToEdit()
 
         binding.etDateMeeting.setText(calendar.timeInMillis.toDateString())
-
     }
 
     private fun getReminderToEdit() {
@@ -119,19 +121,25 @@ class AddReminderFragment : Fragment() {
     }
 
     private fun observeChosenClient() {
-        val currentBackStackEntry = findNavController().currentBackStackEntry
-        val savedStateHandle = currentBackStackEntry?.savedStateHandle
-        savedStateHandle?.getLiveData<Client>(RESULT_CLIENT)
-            ?.observe(currentBackStackEntry, Observer {
-                viewModel.setClient(it)
-            })
+
+        setFragmentResultListener(RESULT_CLIENT) { _, bundle ->
+            val clientResult = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle.getParcelable(RESULT_CLIENT, Client::class.java)
+            } else {
+                bundle.getParcelable(RESULT_CLIENT) as? Client
+            }
+            if (clientResult != null) {
+                client = clientResult
+                setClientField(clientResult)
+            }
+        }
     }
 
     private fun observeViewModel() {
-        with(binding) {
-            viewModel.state.observe(viewLifecycleOwner) {
-                when (it) {
-                    is AddReminderFormState -> {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                with(binding) {
+                    viewModel.state.collect {
                         tiTitle.error = it.titleError
                         tiClient.error = it.clientNameError
                         tiTimeMeeting.error = it.timeError
@@ -141,17 +149,15 @@ class AddReminderFragment : Fragment() {
                 }
             }
         }
-        viewModel.client.observe(viewLifecycleOwner) {
-            it?.let {
-                val clientStr = String.format(
-                    getString(R.string.client_field_template),
-                    it.getFullName(),
-                    it.email
-                )
-                binding.etClient.setText(clientStr)
-                client = it
-            }
-        }
+    }
+
+    private fun setClientField(client: Client) {
+        val clientStr = String.format(
+            getString(R.string.client_field_template),
+            client.getFullName(),
+            client.email
+        )
+        binding.etClient.setText(clientStr)
     }
 
     private fun setOnClickListeners() {
