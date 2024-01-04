@@ -7,17 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.shv.meetingreminder2.MeetingReminderApplication
 import com.shv.meetingreminder2.databinding.FragmentClientsListBinding
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.presentation.adapters.clients.ClientsAdapter
 import com.shv.meetingreminder2.presentation.viewmodels.ViewModelFactory
-import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsList
+import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsState
 import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsViewModel
-import com.shv.meetingreminder2.presentation.viewmodels.clients.Loading
-import com.shv.meetingreminder2.presentation.viewmodels.clients.LoadingError
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ClientsListFragment : Fragment() {
@@ -67,31 +69,36 @@ class ClientsListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            with(binding) {
-                pbClientLoading.isVisible = false
-                buttonRetryLoading.visibility = View.GONE
-                when (it) {
-                    is ClientsList -> {
-                        adapter.addClients(it.clientsList)
-                    }
-
-                    Loading -> {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.state.collect {
+                    with(binding) {
                         pbClientLoading.isVisible = true
-                    }
+                        buttonRetryLoading.visibility = View.GONE
+                        when (it) {
+                            is ClientsState.ClientsList -> {
+                                pbClientLoading.isVisible = false
+                                adapter.addClients(it.clientsList)
+                            }
 
-                    is LoadingError -> {
-                        pbClientLoading.isVisible = false
-                        buttonRetryLoading.visibility = View.VISIBLE
+                            ClientsState.Loading -> {
+                                buttonRetryLoading.visibility = View.GONE
+                            }
 
-                        Toast.makeText(
-                            context,
-                            it.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            is ClientsState.LoadingError -> {
+                                pbClientLoading.isVisible = false
+                                buttonRetryLoading.visibility = View.VISIBLE
 
-                        buttonRetryLoading.setOnClickListener {
-                            viewModel.loadClients()
+                                Toast.makeText(
+                                    context,
+                                    it.errorMessage,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                buttonRetryLoading.setOnClickListener {
+                                    viewModel.retryLoadClients()
+                                }
+                            }
                         }
                     }
                 }

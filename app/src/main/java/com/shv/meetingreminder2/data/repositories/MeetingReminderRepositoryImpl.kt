@@ -9,9 +9,17 @@ import com.shv.meetingreminder2.data.network.api.ApiService
 import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
 import com.shv.meetingreminder2.domain.repositories.MeetingReminderRepository
+import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,6 +29,8 @@ class MeetingReminderRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mapper: ReminderMapper
 ) : MeetingReminderRepository {
+
+    private val retryLoadClientEvent = MutableSharedFlow<Unit>()
 
     override fun getRemindersList(): LiveData<List<Reminder>> {
         return reminderDao.getRemindersList().map {
@@ -46,9 +56,28 @@ class MeetingReminderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadClientsList(): List<Client> {
+    private suspend fun getClientsFromApi(): List<Client> {
         val clientsDto = apiService.getClientsList()
         return mapper.mapListDtoToListClient(clientsDto)
+    }
+
+    override fun loadClientsList(): Flow<ClientsState> = flow {
+        emit(getClientsFromApi())
+        retryLoadClientEvent.collect {
+            emit(getClientsFromApi())
+        }
+    }.map {
+        ClientsState.ClientsList(clientsList = it) as ClientsState
+    }.onStart {
+        emit(ClientsState.Loading)
+    }.retryWhen { cause, _ ->
+        emit(ClientsState.LoadingError(cause.message))
+        delay(5_000)
+        true
+    }
+
+    override suspend fun retryLoadClients() {
+        retryLoadClientEvent.emit(Unit)
     }
 
     override suspend fun updateAlarmStatus(reminder: Reminder) {

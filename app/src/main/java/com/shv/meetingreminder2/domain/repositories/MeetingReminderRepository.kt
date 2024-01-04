@@ -1,8 +1,9 @@
 package com.shv.meetingreminder2.domain.repositories
 
 import androidx.lifecycle.LiveData
-import com.shv.meetingreminder2.domain.entity.Client
 import com.shv.meetingreminder2.domain.entity.Reminder
+import com.shv.meetingreminder2.presentation.viewmodels.clients.ClientsState
+import kotlinx.coroutines.flow.Flow
 
 interface MeetingReminderRepository {
 
@@ -14,9 +15,11 @@ interface MeetingReminderRepository {
 
     suspend fun deleteReminder(id: Int)
 
-    suspend fun loadClientsList(): List<Client>
+    fun loadClientsList(): Flow<ClientsState>
 
     suspend fun updateAlarmStatus(reminder: Reminder)
 
     suspend fun getActiveAlarms(time: Long): List<Reminder>
+
+    suspend fun retryLoadClients()
 }

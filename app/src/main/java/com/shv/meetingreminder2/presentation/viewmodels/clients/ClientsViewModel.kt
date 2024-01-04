@@ -1,41 +1,27 @@
 package com.shv.meetingreminder2.presentation.viewmodels.clients
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shv.meetingreminder2.data.extensions.mergeWith
 import com.shv.meetingreminder2.domain.usecases.LoadClientsListUseCase
-import kotlinx.coroutines.async
+import com.shv.meetingreminder2.domain.usecases.RetryLoadClientsUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ClientsViewModel @Inject constructor(
-    private val loadClientsListUseCase: LoadClientsListUseCase
+    private val loadClientsListUseCase: LoadClientsListUseCase,
+    private val retryLoadClientsUseCase: RetryLoadClientsUseCase
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<ClientsState>()
-    val state: LiveData<ClientsState>
-        get() = _state
+    private val loadingFlow = MutableSharedFlow<ClientsState>()
+    val state = loadClientsListUseCase()
+        .mergeWith(loadingFlow)
 
-    init {
-        loadClients()
-    }
-
-    fun loadClients() {
-        val clients = viewModelScope.async {
-            _state.value = Loading
-            loadClientsListUseCase()
-        }
+    fun retryLoadClients() {
         viewModelScope.launch {
-            try {
-                _state.value = ClientsList(
-                    clientsList = clients.await()
-                )
-            } catch (e: Exception) {
-                _state.value = LoadingError(
-                    errorMessage = e.message
-                )
-            }
+            loadingFlow.emit(ClientsState.Loading)
+            retryLoadClientsUseCase()
         }
     }
 }
