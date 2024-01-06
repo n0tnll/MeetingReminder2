@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="16dp">
+    style="@style/Widget.MeetingReminder2.CardViewFilledStyleSched"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,17 +25,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:riv_border_width="1dp"
             app:riv_corner_radius="30dp"
             app:riv_mutate_background="true"
             app:riv_oval="true" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_client_full_name"
+            style="@style/Widget.MeetingReminder2.drawableTint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:gravity="center"
+            android:textAppearance="?attr/textAppearanceBody1"
             app:drawableStartCompat="@drawable/ic_person"
             app:layout_constraintBottom_toTopOf="@+id/delimiter_name"
             app:layout_constraintStart_toEndOf="@id/iv_client_photo"
@@ -49,7 +51,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:background="#E0E5ED"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/tv_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -58,6 +60,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_email"
+            style="@style/Widget.MeetingReminder2.drawableTint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -75,13 +78,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:background="#E0E5ED"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@id/iv_client_photo"
             app:layout_constraintTop_toBottomOf="@+id/tv_email" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
