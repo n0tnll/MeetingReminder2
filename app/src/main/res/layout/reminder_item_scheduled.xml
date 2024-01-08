@@ -15,25 +15,17 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp">
 
-        <View
-            android:id="@+id/v_card_header"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/iv_reminder_scheduled"
             style="@style/Widget.MeetingReminder2.ImageViewTint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@string/icon_reminder_s_status_descr"
             android:src="@drawable/ic_alarm_on"
-            app:layout_constraintBottom_toBottomOf="@id/v_card_header"
-            app:layout_constraintStart_toStartOf="@id/v_card_header"
-            app:layout_constraintTop_toTopOf="@id/v_card_header" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_reminder_title"
@@ -47,8 +39,7 @@
             app:layout_constraintTop_toTopOf="@id/iv_reminder_scheduled"
             tools:text="Reminder title" />
 
-
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/iv_client_photo"
             android:layout_width="70dp"
             android:layout_height="70dp"
@@ -58,10 +49,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ic_client_without_photo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/v_card_header"
-            app:riv_corner_radius="30dp"
-            app:riv_mutate_background="true"
-            app:riv_oval="true" />
+            app:layout_constraintTop_toBottomOf="@id/tv_reminder_title" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_client_full_name"
@@ -69,11 +57,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             app:drawableStartCompat="@drawable/ic_person"
             app:layout_constraintBottom_toTopOf="@+id/delimiter_name"
             app:layout_constraintStart_toEndOf="@id/iv_client_photo"
-            app:layout_constraintTop_toBottomOf="@+id/v_card_header"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reminder_title"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Client full name" />
 
@@ -123,7 +112,6 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"

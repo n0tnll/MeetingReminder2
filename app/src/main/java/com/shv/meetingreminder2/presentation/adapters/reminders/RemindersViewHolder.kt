@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import coil.load
+import coil.transform.CircleCropTransformation
+import com.shv.meetingreminder2.R
 import com.shv.meetingreminder2.data.extensions.toDateString
 import com.shv.meetingreminder2.data.extensions.toTimeString
 import com.shv.meetingreminder2.databinding.ReminderItemCompletedBinding
@@ -27,9 +29,12 @@ sealed class RemindersViewHolder(
                     tvClientFullName.text = clientName
                     tvEmail.text = client.email
                     tvReminderTime.text =
-                        if (isTimeKnown) dateTime.toTimeString() else "During the day"
+                        if (isTimeKnown) dateTime.toTimeString()
+                        else context.getString(R.string.during_the_day)
                     tvReminderDate.text = dateTime.toDateString()
-                    ivClientPhoto.load(client.imgUrl)
+                    ivClientPhoto.load(client.imgUrl) {
+                        transformations(CircleCropTransformation())
+                    }
                 }
             }
         }
@@ -57,9 +62,12 @@ sealed class RemindersViewHolder(
                     tvClientFullName.text = clientName
                     tvEmail.text = client.email
                     tvReminderTime.text =
-                        if (isTimeKnown) dateTime.toTimeString() else "During the day"
+                        if (isTimeKnown) dateTime.toTimeString()
+                        else context.getString(R.string.during_the_day)
                     tvReminderDate.text = dateTime.toDateString()
-                    ivClientPhoto.load(client.imgUrl)
+                    ivClientPhoto.load(client.imgUrl) {
+                        transformations(CircleCropTransformation())
+                    }
                 }
             }
         }

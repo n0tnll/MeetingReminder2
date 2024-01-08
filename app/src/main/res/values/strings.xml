@@ -12,6 +12,24 @@
     <string name="retry_button">Retry</string>
     <string name="icon_about_have_no_reminders_descr">icon about have no reminders</string>
     <string name="client_field_template">%s\n%s</string>
-    <string name="notifications_permission_granted">Нет разрешения на уведомления!</string>
+    <string name="notifications_permission_granted">No permission for notifications!</string>
     <string name="no_reminders">No reminders</string>
+    <string name="the_title_field_can_t_be_blank_error">The title field can\'t be blank</string>
+    <string name="the_client_must_be_chosen_error">The client must be chosen</string>
+    <string name="incorrect_time_error">Incorrect time</string>
+    <string name="during_the_day">During the day</string>
+    <string name="ok_action">OK!</string>
+    <string name="repeat_about_1_hour_action">Repeat about 1 hour</string>
+    <string name="content_notification_known_time">Your meeting with %s about %s</string>
+    <string name="content_notification_unknown_time">Your meeting with %s is soon"</string>
+    <string name="notification_about_meeting_with_client_alarm_rec">Notification about meeting with client</string>
+    <string name="notification_without_current_meeting_time_alarm_rec">Notification without current meeting time</string>
+    <string name="select_meeting_date_calendar">Select meeting date</string>
+    <string name="select_meeting_time_timepicker">Select meeting time</string>
+    <string name="toast_time_unknown">The notification will notify you in 1 hour</string>
+    <string name="toast_time_known">The notification will notify you at %s %s</string>
+    <string name="toast_reminder_deleted">"%s has been deleted"</string>
+    <string name="add_reminder_nav_label">Add Reminder</string>
+    <string name="clients_list_nav_label">Clients List</string>
+    <string name="meeting_reminder_nav_label">Meeting Reminder</string>
 </resources>

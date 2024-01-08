@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Встречи</string>
+    <string name="button_add_reminder_descr">Кнопка добавить напоминание</string>
+    <string name="client_photo_descr">Фото клиента</string>
+    <string name="icon_reminder_s_status_descr">Значок напоминания о статусе</string>
+    <string name="icon_time_descr">Значок времени</string>
+    <string name="title_hint">Заголовок*</string>
+    <string name="client_hint">Клиент*</string>
+    <string name="date_hint">Дата*</string>
+    <string name="time_hint">Время</string>
+    <string name="button_save">Сохранить</string>
+    <string name="retry_button">Повторить загрузку</string>
+    <string name="icon_about_have_no_reminders_descr">значок о том, что у меня нет напоминаний</string>
+    <string name="client_field_template">%s\n%s</string>
+    <string name="notifications_permission_granted">Нет разрешения на уведомления!</string>
+    <string name="no_reminders">Нет напоминаний</string>
+    <string name="the_title_field_can_t_be_blank_error">Поле заголовка не может быть пустым.</string>
+    <string name="the_client_must_be_chosen_error">Клиент должен быть выбран</string>
+    <string name="incorrect_time_error">Неправильное время</string>
+    <string name="during_the_day">В течение дня</string>
+    <string name="ok_action">Хорошо!</string>
+    <string name="repeat_about_1_hour_action">Напомнить через 1 час</string>
+    <string name="content_notification_known_time">Ваша встреча с %s по поводу %s</string>
+    <string name="content_notification_unknown_time">У Вас скоро встреча с %s\"</string>
+    <string name="notification_about_meeting_with_client_alarm_rec">Уведомление о встрече с клиентом</string>
+    <string name="notification_without_current_meeting_time_alarm_rec">Уведомление без текущего времени встречи</string>
+    <string name="select_meeting_date_calendar">Выберите дату встречи</string>
+    <string name="select_meeting_time_timepicker">Выберите время встречи</string>
+    <string name="toast_time_unknown">Уведомление придёт через 1 час</string>
+    <string name="toast_time_known">Уведомление придёт в %s %s</string>
+    <string name="toast_reminder_deleted">\"%s удалено\"</string>
+    <string name="add_reminder_nav_label">Добавить напоминание</string>
+    <string name="clients_list_nav_label">Список клиентов</string>
+    <string name="meeting_reminder_nav_label">Напоминание о встрече</string>
+</resources>

@@ -239,7 +239,7 @@ class AddReminderFragment : Fragment() {
         val picker = MaterialDatePicker.Builder.datePicker()
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .setCalendarConstraints(constraints)
-            .setTitleText("Select meeting date")
+            .setTitleText(getString(R.string.select_meeting_date_calendar))
             .build()
 
         picker.addOnPositiveButtonClickListener {
@@ -259,7 +259,7 @@ class AddReminderFragment : Fragment() {
 
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(clockFormat)
-            .setTitleText("Select meeting time")
+            .setTitleText(getString(R.string.select_meeting_time_timepicker))
             .setHour(DEFAULT_HOUR)
             .setMinute(DEFAULT_MINUTES)
             .build()
@@ -293,10 +293,10 @@ class AddReminderFragment : Fragment() {
         val meetingTime = Calendar.getInstance().apply {
             timeInMillis = reminder.dateTime
             if (reminder.isTimeKnown) {
-                add(Calendar.HOUR_OF_DAY, -1)
+                add(Calendar.HOUR_OF_DAY, MINUS_ONE_HOUR)
                 set(Calendar.SECOND, 0)
             } else {
-                add(Calendar.HOUR_OF_DAY, 1)
+                add(Calendar.HOUR_OF_DAY, ADD_ONE_HOUR)
                 set(Calendar.SECOND, 0)
             }
         }
@@ -314,7 +314,16 @@ class AddReminderFragment : Fragment() {
             )
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, meetingTime.timeInMillis, pendingIntent)
-        Toast.makeText(context, "Notification was added!", Toast.LENGTH_SHORT).show()
+        val toastMessage = if (reminder.isTimeKnown) {
+            String.format(
+                getString(R.string.content_notification_known_time),
+                reminder.dateTime.toDateString(),
+                reminder.dateTime.toTimeString()
+            )
+        } else {
+            getString(R.string.toast_time_unknown)
+        }
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
@@ -332,5 +341,8 @@ class AddReminderFragment : Fragment() {
         private const val EMPTY_FIELD = ""
         private const val DEFAULT_HOUR = 12
         private const val DEFAULT_MINUTES = 30
+
+        private const val ADD_ONE_HOUR = 1
+        private const val MINUS_ONE_HOUR = -1
     }
 }

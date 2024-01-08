@@ -42,9 +42,8 @@
         <item name="android:statusBarColor">@color/md_theme_light_surface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="toolbarStyle">@style/Widget.MeetingReminder2.ToolbarStyle</item>
-        <!-- Cards color. -->
-<!--        <item name="materialCardViewStyle">@style/Widget.MeetingReminder2.CardViewFilledStyle</item>-->
-
+        <!-- Date Picker -->
+        <item name="dialogTheme">@style/ThemeOverlay.MeetingReminder2.DatePicker</item>
     </style>
 
     <style name="Widget.MeetingReminder2.ToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
@@ -59,4 +58,7 @@
         <item name="cardBackgroundColor">@color/md_theme_light_tertiaryContainer_compl</item>
     </style>
 
+    <style name="ThemeOverlay.MeetingReminder2.DatePicker" parent="Theme.Material3.Light.Dialog">
+        <item name="colorAccent">?attr/colorTertiaryContainer</item>
+    </style>
 </resources>

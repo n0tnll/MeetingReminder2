@@ -74,8 +74,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
-    implementation("com.makeramen:roundedimageview:2.3.0")
-
     //navigation
     val navVersion = "2.7.6"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")

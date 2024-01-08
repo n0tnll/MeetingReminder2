@@ -122,7 +122,10 @@ class RemindersListFragment : Fragment() {
 
                         Toast.makeText(
                             requireContext(),
-                            "\"${reminder.title}\" has been deleted",
+                            String.format(
+                                requireContext().getString(R.string.toast_reminder_deleted),
+                                reminder.title
+                            ),
                             Toast.LENGTH_SHORT
                         ).show()
                         cancelNotification(reminder.id)

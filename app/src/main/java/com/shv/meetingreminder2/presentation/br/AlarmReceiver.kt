@@ -45,7 +45,7 @@ class AlarmReceiver : BroadcastReceiver() {
         }
         val actionComplete = NotificationCompat.Action.Builder(
             null,
-            "Ok!",
+            context.getString(R.string.ok_action),
             pendingIntentCompeted
         ).build()
 
@@ -62,14 +62,18 @@ class AlarmReceiver : BroadcastReceiver() {
         }
         val actionRepeat = NotificationCompat.Action.Builder(
             null,
-            "Repeat about 1 hour",
+            context.getString(R.string.repeat_about_1_hour_action),
             pendingIntentRepeatable
         ).build()
 
         val notificationWhenTimeKnown = NotificationCompat.Builder(context, CHANNEL_TIME_KNOWN_ID)
             .setContentTitle(reminder.title)
             .setContentText(
-                "Your meeting with ${reminder.clientName} about ${reminder.dateTime.toTimeString()}"
+                String.format(
+                    context.getString(R.string.content_notification_known_time),
+                    reminder.clientName,
+                    reminder.dateTime.toTimeString()
+                )
             )
             .setSmallIcon(R.drawable.ic_meeting_notification)
             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -80,7 +84,10 @@ class AlarmReceiver : BroadcastReceiver() {
         val notificationWhenTimeUnknown = NotificationCompat.Builder(context, CHANNEL_REPEATABLE_ID)
             .setContentTitle(reminder.title)
             .setContentText(
-                "Your meeting with ${reminder.clientName} is soon"
+                String.format(
+                    context.getString(R.string.content_notification_unknown_time),
+                    reminder.clientName
+                )
             )
             .setSmallIcon(R.drawable.ic_meeting_notification)
             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -107,8 +114,10 @@ class AlarmReceiver : BroadcastReceiver() {
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description =
-                if (isTimeKnown) "Notification about meeting with client"
-                else "Notification without current meeting time"
+                if (isTimeKnown)
+                    context.getString(R.string.notification_about_meeting_with_client_alarm_rec)
+                else
+                    context.getString(R.string.notification_without_current_meeting_time_alarm_rec)
         }
         notificationManager.createNotificationChannel(channel)
     }

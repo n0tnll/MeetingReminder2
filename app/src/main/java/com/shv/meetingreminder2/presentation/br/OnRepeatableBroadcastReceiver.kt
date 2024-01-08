@@ -37,7 +37,7 @@ class OnRepeatableBroadcastReceiver : BroadcastReceiver() {
             NotificationManagerCompat.from(context).cancel(null, it.id)
             val newMeetingTime = Calendar.getInstance().apply {
                 timeInMillis = it.dateTime
-                add(Calendar.HOUR_OF_DAY, 1)
+                add(Calendar.HOUR_OF_DAY, ADD_ONE_HOUR_TO_TIME)
             }
             it.dateTime = newMeetingTime.timeInMillis
 
@@ -67,6 +67,9 @@ class OnRepeatableBroadcastReceiver : BroadcastReceiver() {
     }
 
     companion object {
+
+        private const val ADD_ONE_HOUR_TO_TIME = 1
+
         fun newIntent(context: Context): Intent {
             return Intent(context, OnRepeatableBroadcastReceiver::class.java)
         }

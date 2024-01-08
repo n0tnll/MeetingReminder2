@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/iv_client_photo"
             android:layout_width="70dp"
             android:layout_height="70dp"
@@ -24,10 +24,7 @@
             android:src="@drawable/ic_client_without_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:riv_corner_radius="30dp"
-            app:riv_mutate_background="true"
-            app:riv_oval="true" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_client_full_name"

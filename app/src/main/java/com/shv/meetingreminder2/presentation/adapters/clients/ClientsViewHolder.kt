@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.shv.meetingreminder2.data.extensions.getFullName
 import com.shv.meetingreminder2.databinding.ClientItemBinding
 import com.shv.meetingreminder2.domain.entity.Client
@@ -15,7 +16,9 @@ class ClientsViewHolder(
     fun bind(client: Client, onClientClick: ((Client) -> Unit)?) {
         with(binding) {
             with(client) {
-                ivClientPhoto.load(imgUrl)
+                ivClientPhoto.load(imgUrl) {
+                    transformations(CircleCropTransformation())
+                }
                 tvClientFullName.text = getFullName()
                 tvEmail.text = email
             }
