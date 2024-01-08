@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MeetingReminder2.CardViewFilledStyleSched"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/iv_reminder_scheduled"
+            style="@style/Widget.MeetingReminder2.ImageViewTint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/icon_reminder_s_status_descr"
+            android:src="@drawable/ic_alarm_on"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_reminder_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_reminder_scheduled"
+            app:layout_constraintStart_toEndOf="@id/iv_reminder_scheduled"
+            app:layout_constraintTop_toTopOf="@id/iv_reminder_scheduled"
+            tools:text="Reminder title" />
+
+        <ImageView
+            android:id="@+id/iv_client_photo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/client_photo_descr"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_client_without_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_reminder_title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_client_full_name"
+            style="@style/Widget.MeetingReminder2.drawableTint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            app:drawableStartCompat="@drawable/ic_person"
+            app:layout_constraintBottom_toTopOf="@+id/delimiter_name"
+            app:layout_constraintStart_toEndOf="@id/iv_client_photo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reminder_title"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Client full name" />
+
+        <View
+            android:id="@+id/delimiter_name"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/tv_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/iv_client_photo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_client_full_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_email"
+            style="@style/Widget.MeetingReminder2.drawableTint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            app:drawableStartCompat="@drawable/ic_email"
+            app:layout_constraintBottom_toTopOf="@+id/delimiter_email"
+            app:layout_constraintStart_toEndOf="@+id/iv_client_photo"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_name"
+            tools:text="Client email" />
+
+        <View
+            android:id="@+id/delimiter_email"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/delimiter_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/iv_client_photo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+        <View
+            android:id="@+id/delimiter_bottom"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_client_photo" />
+
+        <ImageView
+            android:id="@+id/iv_clock"
+            style="@style/Widget.MeetingReminder2.ImageViewTint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/icon_time_descr"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_bottom"
+            app:srcCompat="@drawable/ic_schedule" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_reminder_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_clock"
+            app:layout_constraintEnd_toStartOf="@+id/tv_reminder_date"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/iv_clock"
+            app:layout_constraintTop_toTopOf="@+id/iv_clock"
+            tools:text="15:00" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_reminder_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_reminder_time"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_bottom"
+            tools:text="22.01.2022" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
